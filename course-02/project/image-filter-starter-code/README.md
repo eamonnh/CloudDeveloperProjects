@@ -12,6 +12,7 @@ A basic Ionic client web application which consumes the RestAPI Backend. [Covere
 
 ### Setup Node Environment
 
+## Eamonn is at this step but whats to use this text to test his branching and merging strategy on github
 You'll need to create a new node server. Open a new terminal within the project directory and run:
 
 1. Initialize a new project: `npm i`
