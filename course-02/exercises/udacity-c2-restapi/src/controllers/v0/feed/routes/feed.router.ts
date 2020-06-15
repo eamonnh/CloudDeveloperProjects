@@ -3,6 +3,7 @@ import { FeedItem } from '../models/FeedItem';
 import { requireAuth } from '../../users/routes/auth.router';
 import * as AWS from '../../../../aws';
 
+
 const router: Router = Router();
 
 // Get all feed items
@@ -18,13 +19,52 @@ router.get('/', async (req: Request, res: Response) => {
 
 //@TODO
 //Add an endpoint to GET a specific resource by Primary Key
+router.get( '/:id', async ( req: Request, res: Response ) => {
+    let { id } = req.query;
+   
+    if ( !id ) {
+     return res.status(400)
+               .send(`id is required`);
+   }
+   const items = await FeedItem.findAll({
+       where: {
+           id : id
+       }
+     });
+
+     //console.log("Hello World /:id");
+     if(items.length == 0){
+        return res.status(404).send('No item found with this id');
+     }
+
+   return res.status(200).send(items);
+
+} );
 
 // update a specific resource
 router.patch('/:id', 
     requireAuth, 
     async (req: Request, res: Response) => {
         //@TODO try it yourself
-        res.send(500).send("not implemented")
+        let { id } = req.query;
+        if ( !id ) {
+            return res.status(400)
+                      .send(`id is required`);
+          }
+
+        const caption = req.body.caption;
+        if ( !caption ) {
+            return res.status(400)
+                      .send(`Caption is required`);
+          }
+
+          const result = await FeedItem.update({ caption: caption }, {
+            where: {
+              id: id
+            }
+          });
+
+    return res.status(200).send(caption);
 });
 
 
